@@ -9,7 +9,8 @@ import threading
 from spotipy.oauth2 import SpotifyOAuth
 
 model = whisper.load_model("tiny")
-
+device_id = ""
+playlist_start = "https://open.spotify.com/playlist/4kLRvuenc9WPlR10Z8nsn2"
 
 scope = "user-library-read,user-read-playback-state,user-modify-playback-state"
 auth = SpotifyOAuth(scope=scope)
@@ -67,21 +68,21 @@ def thread_function(frames, i):
                 return 
             print(result["text"])
             if "spotify" in result["text"].lower():
-                sp.start_playback(device_id="d721bdd182c34050575dd3f652093cd77b10a2b6",context_uri="https://open.spotify.com/playlist/4kLRvuenc9WPlR10Z8nsn2")
+                sp.start_playback(device_id=device_id,context_uri=playlist_start)
             elif "stop" in result["text"].lower():
-                sp.pause_playback(device_id="d721bdd182c34050575dd3f652093cd77b10a2b6")
+                sp.pause_playback(device_id=device_id)
             elif "play" in result["text"].lower():
-                sp.start_playback(device_id="d721bdd182c34050575dd3f652093cd77b10a2b6")
+                sp.start_playback(device_id=device_id)
             elif "back" in result["text"].lower():
-                sp.previous_track(device_id="d721bdd182c34050575dd3f652093cd77b10a2b6")
+                sp.previous_track(device_id=device_id)
             elif "next" in result["text"].lower():
-                sp.next_track(device_id="d721bdd182c34050575dd3f652093cd77b10a2b6")
+                sp.next_track(device_id=device_id)
             elif "vol" and "low" in result["text"].lower():
-                sp.volume(20,device_id="d721bdd182c34050575dd3f652093cd77b10a2b6")
+                sp.volume(20,device_id=device_id)
             elif "vol" and "mid" in result["text"].lower():
-                sp.volume(50,device_id="d721bdd182c34050575dd3f652093cd77b10a2b6")    
+                sp.volume(50,device_id=device_id)    
             elif "vol" and "high" in result["text"].lower():
-                sp.volume(80,device_id="d721bdd182c34050575dd3f652093cd77b10a2b6")    
+                sp.volume(80,device_id=device_id)    
             os.remove(f"{filename}{i}.wav")
             x.remove(x[i-1])
         except:
